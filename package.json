@@ -33,6 +33,7 @@
   "homepage": "https://github.com/LaMbA3/typeorm-query-parser#readme",
   "devDependencies": {
     "@types/jest": "^22.2.3",
+    "@types/node": "^14.0.14",
     "codecov": "^3.1.0",
     "jest": "^23.6.0",
     "prettier": "^1.13.2",

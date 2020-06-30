@@ -23,7 +23,7 @@ interface OptionsObject{
 interface QueryTypeOrm {
     select?: string[];
     relations?: string[];
-    where?: [] | {};
+    where?: {};
     order?: {};
     skip?: number;
     take?: number;
