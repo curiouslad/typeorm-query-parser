@@ -25,7 +25,7 @@ EntityRepository.find(parsedQuery);
 ```
 
 ### This is just an example, you can use it however you like.
-### Basicly you just pass query object to QueryBuilder and .build() will return you object ready for .find() in typeorm.
+### Basicly you just create instance of QueryBuilder and pass query object to .build() it will return you object ready for .find() in typeorm.
 ### For this to work your url string must follow the documentation below.
 
 # Docs
@@ -37,7 +37,8 @@ EntityRepository.find(parsedQuery);
 - [limit](#Limit)
 - [page](#Page)
 - [cache](#Cache)
-- [optionz](#Options)
+- [join](#Join)
+- [option](#Options)
 - [Filter Operators](#Operators)
 
 #### Select
@@ -78,7 +79,11 @@ page number start from 1.
 ```example.com?cache=true```
 default is false.
 
-## Optios
+#### Join
+```example.com?join=relation,relation2,relation.nested```
+##### note: This feature is still experimental and should NOT be used in production.
+
+## Options
 ```javascript
 const options={
             LOOKUP_DELIMITER:'||',
