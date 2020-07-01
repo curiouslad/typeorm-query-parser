@@ -1,24 +1,24 @@
 import { Between, In, IsNull, LessThan, LessThanOrEqual, Like, MoreThan, MoreThanOrEqual, Not } from "typeorm";
 
 interface IOptionsObject{
-    LOOKUP_DELIMITER:string;
-    RELATION_DELIMITER:string;
-    EXACT:string;
-    NOT:string;
-    CONTAINS:string;
-    IS_NULL:string;
-    GT:string;
-    GTE:string;
-    LT:string;
-    LTE:string;
-    STARTS_WITH: string;
-    ENDS_WITH: string;
-    IN:string;
-    BETWEEN:string;
-    OR:string;
-    CONDITION_DELIMITER:string;
-    VALUE_DELIMITER: string;
-    DEFAULT_LIMIT:string;
+    LOOKUP_DELIMITER?:string;
+    RELATION_DELIMITER?:string;
+    EXACT?:string;
+    NOT?:string;
+    CONTAINS?:string;
+    IS_NULL?:string;
+    GT?:string;
+    GTE?:string;
+    LT?:string;
+    LTE?:string;
+    STARTS_WITH?: string;
+    ENDS_WITH?: string;
+    IN?:string;
+    BETWEEN?:string;
+    OR?:string;
+    CONDITION_DELIMITER?:string;
+    VALUE_DELIMITER?: string;
+    DEFAULT_LIMIT?:string;
 }
 interface IQueryTypeOrm {
     select?: string[];
@@ -72,11 +72,11 @@ export class QueryBuilder{
         const output:IQueryTypeOrm = {};
         if(!this.notValid(query.select)){
             const select = query.select as string;
-            output.select = select.split(this.options.VALUE_DELIMITER);
+            output.select = select.split(this.options.VALUE_DELIMITER as string);
         }
         if(!this.notValid(query.join)){
             const join = query.join as string;
-            output.relations = join.split(this.options.VALUE_DELIMITER);
+            output.relations = join.split(this.options.VALUE_DELIMITER as string);
         }  
         if(!this.notValid(query.sort)){
             output.order = this.createOrderArray(query.sort as string);
@@ -93,7 +93,7 @@ export class QueryBuilder{
             output.take = limit;
         } 
         if(!this.notValid(query.page)){
-            const limit = query.limit || this.options.DEFAULT_LIMIT;
+            const limit = query.limit || this.options.DEFAULT_LIMIT as string;
             const limitnum = parseInt(limit,10);
             output.skip =  limitnum * (parseInt(query.page as string,10) - 1);
             output.take = limitnum;
@@ -110,11 +110,11 @@ export class QueryBuilder{
     }
 
     private createOrderArray(sortString:string):{[key:string]:string}{
-        const sortConditions = sortString.split(this.options.CONDITION_DELIMITER);
+        const sortConditions = sortString.split(this.options.CONDITION_DELIMITER as string);
         const order:ILooseObject ={};
 
         sortConditions.forEach(condition=>{
-            const [key, value] = condition.split(this.options.VALUE_DELIMITER);
+            const [key, value] = condition.split(this.options.VALUE_DELIMITER as string);
             if(key){
                 order[key] = (value || 'ASC').toUpperCase();
             }
@@ -123,16 +123,16 @@ export class QueryBuilder{
     }
     private createWhere(filterString:string):object[]{
         const queryToAdd:object[]=[];
-        const orArray = filterString.split(this.options.LOOKUP_DELIMITER+this.options.OR+this.options.LOOKUP_DELIMITER);
+        const orArray = filterString.split(this.options.LOOKUP_DELIMITER as string+this.options.OR+this.options.LOOKUP_DELIMITER);
         orArray.forEach(item=>{
             let obj = {};
-            const condition = item.split(this.options.CONDITION_DELIMITER);
-            const parsedCondition = condition.map(q=>q.split(this.options.LOOKUP_DELIMITER));
+            const condition = item.split(this.options.CONDITION_DELIMITER as string);
+            const parsedCondition = condition.map(q=>q.split(this.options.LOOKUP_DELIMITER as string));
             parsedCondition.forEach(cond=>{
                 let notOperator=false;
-                if(cond[1].startsWith(this.options.NOT)){
+                if(cond[1].startsWith(this.options.NOT as string)){
                     notOperator=true;
-                    const index =this.options.NOT.length;
+                    const index =(this.options.NOT as string).length;
                     cond[1] = cond[1].slice(index);
                 }
 
@@ -175,10 +175,10 @@ export class QueryBuilder{
                 obj[field]  = MoreThanOrEqual(+value);
                 break;
             case this.options.IN:
-                obj[field]  =  In(value.split(this.options.VALUE_DELIMITER));
+                obj[field]  =  In(value.split(this.options.VALUE_DELIMITER as string));
                 break;
             case this.options.BETWEEN:
-                const rangeValues = value.split(this.options.VALUE_DELIMITER);
+                const rangeValues = value.split(this.options.VALUE_DELIMITER as string);
                 obj[field]  = Between(+rangeValues[0], +rangeValues[1]);
                 break;
             }

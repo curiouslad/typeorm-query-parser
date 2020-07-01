@@ -2,7 +2,6 @@
 
 created by: [Mladen Skrbic](https://github.com/LaMbA3)
 
-[![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)](https://travis-ci.org/joemccann/dillinger)
 
 Typeorm Query Parser is simple url string parser for typeorm.
 
