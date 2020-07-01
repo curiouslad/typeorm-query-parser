@@ -1,6 +1,6 @@
-import { Like, IsNull, LessThan, LessThanOrEqual, MoreThan, In, Between, MoreThanOrEqual, Not } from "typeorm";
+import { Between, In, IsNull, LessThan, LessThanOrEqual, Like, MoreThan, MoreThanOrEqual, Not } from "typeorm";
 
-interface OptionsObject{
+interface IOptionsObject{
     LOOKUP_DELIMITER:string;
     RELATION_DELIMITER:string;
     EXACT:string;
@@ -20,7 +20,7 @@ interface OptionsObject{
     VALUE_DELIMITER: string;
     DEFAULT_LIMIT:string;
 }
-interface QueryTypeOrm {
+interface IQueryTypeOrm {
     select?: string[];
     relations?: string[];
     where?: {};
@@ -29,7 +29,7 @@ interface QueryTypeOrm {
     take?: number;
     cache?: boolean;
 }
-interface QueryObject {
+interface IQueryObject {
     select?: string;
     join?:string;
     sort?: string;
@@ -38,12 +38,12 @@ interface QueryObject {
     page?:string;
     filter?:string;
 }
-interface LooseObject {
+interface ILooseObject {
     [key: string]: any
 }
 
 export class QueryBuilder{
-    constructor(private options:OptionsObject={
+    constructor(private options:IOptionsObject={
             LOOKUP_DELIMITER:'||',
             RELATION_DELIMITER:'.',
             CONDITION_DELIMITER:';',
@@ -65,8 +65,11 @@ export class QueryBuilder{
         }
         ){}
 
-    build(query:QueryObject){
-        const output:QueryTypeOrm = {};
+    public getOptions(){
+        return this.options;
+    }
+    public build(query:IQueryObject){
+        const output:IQueryTypeOrm = {};
         if(!this.notValid(query.select)){
             const select = query.select as string;
             output.select = select.split(this.options.VALUE_DELIMITER);
@@ -83,16 +86,16 @@ export class QueryBuilder{
             output.cache = JSON.parse(cache.toLowerCase());
         } 
         if(!this.notValid(query.limit)){
-            const limit = parseInt(query.limit as string)
+            const limit = parseInt(query.limit as string,10)
             // if(!limit){
             //     throw new Error('Limit must be a number.');
             // }
             output.take = limit;
         } 
         if(!this.notValid(query.page)){
-            let limit = query.limit || this.options.DEFAULT_LIMIT;
-            const limitnum = parseInt(limit);
-            output.skip =  limitnum * (parseInt(query.page as string) - 1);
+            const limit = query.limit || this.options.DEFAULT_LIMIT;
+            const limitnum = parseInt(limit,10);
+            output.skip =  limitnum * (parseInt(query.page as string,10) - 1);
             output.take = limitnum;
         }
         if(!this.notValid(query.filter)){
@@ -101,40 +104,39 @@ export class QueryBuilder{
         
         return output;
     }
-    notValid(value:string|undefined):boolean{
+    private notValid(value:string|undefined):boolean{
         if(!value){return true;}
         return false;
     }
 
-    createOrderArray(sortString:string):{[key:string]:string}{
+    private createOrderArray(sortString:string):{[key:string]:string}{
         const sortConditions = sortString.split(this.options.CONDITION_DELIMITER);
-        const order:LooseObject ={};
+        const order:ILooseObject ={};
 
         sortConditions.forEach(condition=>{
-            let [key, value] = condition.split(this.options.VALUE_DELIMITER);
+            const [key, value] = condition.split(this.options.VALUE_DELIMITER);
             if(key){
-                if(!value)value='ASC';
-                order[key] = value.toUpperCase();
+                order[key] = (value || 'ASC').toUpperCase();
             }
         })
         return order;
     }
-    createWhere(filterString:string):object[]{
+    private createWhere(filterString:string):object[]{
         const queryToAdd:object[]=[];
         const orArray = filterString.split(this.options.LOOKUP_DELIMITER+this.options.OR+this.options.LOOKUP_DELIMITER);
         orArray.forEach(item=>{
             let obj = {};
             const condition = item.split(this.options.CONDITION_DELIMITER);
             const parsedCondition = condition.map(q=>q.split(this.options.LOOKUP_DELIMITER));
-            parsedCondition.forEach(item=>{
+            parsedCondition.forEach(cond=>{
                 let notOperator=false;
-                if(item[1].startsWith(this.options.NOT)){
+                if(cond[1].startsWith(this.options.NOT)){
                     notOperator=true;
                     const index =this.options.NOT.length;
-                    item[1] = item[1].slice(index);
+                    cond[1] = cond[1].slice(index);
                 }
 
-                obj = {...obj,...this.createWhereObject(item[0],item[1],item[2],notOperator)}
+                obj = {...obj,...this.createWhereObject(cond[0],cond[1],cond[2],notOperator)}
             })
             queryToAdd.push(obj);
         })
@@ -142,8 +144,8 @@ export class QueryBuilder{
         return queryToAdd;
     }
 
-    createWhereObject(field:string,task:string,value:string,notOperator:boolean){
-        const obj:LooseObject ={};
+    private createWhereObject(field:string,task:string,value:string,notOperator:boolean){
+        const obj:ILooseObject ={};
         switch(task) {
             case this.options.EXACT:
                 obj[field] = value;
@@ -184,8 +186,5 @@ export class QueryBuilder{
                 obj[field] = Not(obj[field]);
               }
             return obj;
-    }
-    getOptions(){
-        return this.options;
     }
 }
