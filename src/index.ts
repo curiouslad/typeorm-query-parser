@@ -43,28 +43,31 @@ interface ILooseObject {
 }
 
 export class QueryBuilder {
+    private options: IOptionsObject;
   constructor(
-    private options: IOptionsObject = {
-      LOOKUP_DELIMITER: '||',
-      RELATION_DELIMITER: '.',
-      CONDITION_DELIMITER: ';',
-      VALUE_DELIMITER: ',',
-      EXACT: '$eq',
-      NOT: '!',
-      CONTAINS: '$cont',
-      IS_NULL: '$isnull',
-      GT: '$gt',
-      GTE: '$gte',
-      LT: '$lt',
-      LTE: '$lte',
-      STARTS_WITH: '$starts',
-      ENDS_WITH: '$ends',
-      IN: '$in',
-      BETWEEN: '$between',
-      OR: '$or',
-      DEFAULT_LIMIT: '25',
-    },
-  ) {}
+     configuration: object ={}
+  ) {
+      this.options = {...{
+        LOOKUP_DELIMITER: '||',
+        RELATION_DELIMITER: '.',
+        CONDITION_DELIMITER: ';',
+        VALUE_DELIMITER: ',',
+        EXACT: '$eq',
+        NOT: '!',
+        CONTAINS: '$cont',
+        IS_NULL: '$isnull',
+        GT: '$gt',
+        GTE: '$gte',
+        LT: '$lt',
+        LTE: '$lte',
+        STARTS_WITH: '$starts',
+        ENDS_WITH: '$ends',
+        IN: '$in',
+        BETWEEN: '$between',
+        OR: '$or',
+        DEFAULT_LIMIT: '25',
+      }, ...configuration}
+  }
 
   public getOptions() {
     return this.options;
