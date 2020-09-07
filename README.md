@@ -18,7 +18,8 @@ import { QueryBuilder } from 'typeorm-query-parser';
 
 const query = req.query;
 const options = {};
-const parser = new QueryBuilder(options).build(query);
+const parser = new QueryBuilder(options);
+const parsedQuery = parser.build(query);
 
 EntityRepository.find(parsedQuery);
 ```
@@ -50,7 +51,7 @@ Each sorting condition must be seperated by: ```;```
 ```example.com?sort=field,ASC;field2,DESC```
 ##### note: 
 ```example.com?sort=field;field2,DESC```
-**Will produce and error, you must specify order of sorting**
+**If you dont provide order of sorting it will default to ASC**
 
 #### Filter
 **here you specify conditions (where) of data you request**
@@ -69,9 +70,8 @@ This is an example of combining both OR and AND in request.
 &nbsp;
 #### Page
 **adds pagination functionality**
-##### note: WHEN USING PAGE, LIMIT query param is REQUIRED.
 ```example.com?limit=25&page=2```
-page number start from 1. 
+**page number start from 1.** 
 
 #### Cache
 **Enables or disables query result caching. See caching for more information and options**
@@ -80,7 +80,6 @@ default is false.
 
 #### Join
 ```example.com?join=relation,relation2,relation.nested```
-##### note: This feature is still experimental and should NOT be used in production.
 
 ## Options
 ```javascript
@@ -113,7 +112,8 @@ const query = req.query;
 const options = {
     DEFAULT_LIMIT: '15'
 };
-const parser = new QueryBuilder(options).build(query);
+const parser = new QueryBuilder(options);
+const parsedQuery = parser.build(query);
 ```
 ##### note: ```VALUE_DELIMITER, CONDITION_DELIMITER, LOOKUP_DELIMITER``` can NOT be the same.
 

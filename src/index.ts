@@ -1,6 +1,6 @@
 import { Between, In, IsNull, LessThan, LessThanOrEqual, Like, MoreThan, MoreThanOrEqual, Not } from 'typeorm';
 
-interface IOptionsObject {
+export interface IOptionsObject {
   LOOKUP_DELIMITER?: string;
   RELATION_DELIMITER?: string;
   EXACT?: string;
@@ -20,7 +20,7 @@ interface IOptionsObject {
   VALUE_DELIMITER?: string;
   DEFAULT_LIMIT?: string;
 }
-interface IQueryTypeOrm {
+export interface IQueryTypeOrm {
   select?: string[];
   relations?: string[];
   where?: {};
@@ -29,7 +29,7 @@ interface IQueryTypeOrm {
   take?: number;
   cache?: boolean;
 }
-interface IQueryObject {
+export interface IQueryObject {
   select?: string;
   join?: string;
   sort?: string;
@@ -45,7 +45,7 @@ interface ILooseObject {
 export class QueryBuilder {
     private options: IOptionsObject;
   constructor(
-     configuration: object ={}
+     configuration: IOptionsObject ={}
   ) {
       this.options = {...{
         LOOKUP_DELIMITER: '||',
