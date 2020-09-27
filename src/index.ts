@@ -43,11 +43,10 @@ interface ILooseObject {
 }
 
 export class QueryBuilder {
-    private options: IOptionsObject;
-  constructor(
-     configuration: IOptionsObject ={}
-  ) {
-      this.options = {...{
+  private options: IOptionsObject;
+  constructor(configuration: IOptionsObject = {}) {
+    this.options = {
+      ...{
         LOOKUP_DELIMITER: '||',
         RELATION_DELIMITER: '.',
         CONDITION_DELIMITER: ';',
@@ -66,7 +65,9 @@ export class QueryBuilder {
         BETWEEN: '$between',
         OR: '$or',
         DEFAULT_LIMIT: '25',
-      }, ...configuration}
+      },
+      ...configuration,
+    };
   }
 
   public getOptions() {
