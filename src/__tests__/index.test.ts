@@ -1,4 +1,4 @@
-import { Like, IsNull, LessThan, LessThanOrEqual, MoreThan, In, Between, MoreThanOrEqual, Not } from 'typeorm';
+import { Between, In, IsNull, LessThan, LessThanOrEqual, Like, MoreThan, MoreThanOrEqual, Not } from 'typeorm';
 import { QueryBuilder } from '../index';
 
 describe('QueryBuilder test', () => {
@@ -150,6 +150,9 @@ describe('QueryBuilder test', () => {
       it('testing between operator', () => {
         expect(qb.build({ filter: 'id||$between||1,3' })).toEqual({ where: [{ id: Between(1, 3) }] });
       });
+      it('testing gte operator with date', () => {
+        expect(qb.build({ filter: 'date||$gte||2021-01-01' })).toEqual({ where: [{ date: MoreThanOrEqual('2021-01-01') }] });
+      });      
     });
     describe('testing join', () => {
       it('should return empty object if join string not provided', () => {

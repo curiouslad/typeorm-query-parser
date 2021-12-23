@@ -1,3 +1,4 @@
+import { isMatch } from 'date-fns';
 import { Between, In, IsNull, LessThan, LessThanOrEqual, Like, MoreThan, MoreThanOrEqual, Not } from 'typeorm';
 
 export interface IOptionsObject {
@@ -40,6 +41,10 @@ export interface IQueryObject {
 }
 interface ILooseObject {
   [key: string]: any;
+}
+enum EDateType {
+  Date = "yyyy-MM-dd",
+  Datetime = "yyyy-MM-dd HH:MM:ss"
 }
 
 export class QueryBuilder {
@@ -172,28 +177,32 @@ export class QueryBuilder {
         obj[field] = IsNull();
         break;
       case this.options.LT:
-        obj[field] = LessThan(+value);
+        obj[field] = LessThan(this.parseDateOrNumber(value));
         break;
       case this.options.LTE:
-        obj[field] = LessThanOrEqual(+value);
+        obj[field] = LessThanOrEqual(this.parseDateOrNumber(value));
         break;
       case this.options.GT:
-        obj[field] = MoreThan(+value);
+        obj[field] = MoreThan(this.parseDateOrNumber(value));
         break;
       case this.options.GTE:
-        obj[field] = MoreThanOrEqual(+value);
+        obj[field] = MoreThanOrEqual(this.parseDateOrNumber(value));
         break;
       case this.options.IN:
         obj[field] = In(value.split(this.options.VALUE_DELIMITER as string));
         break;
       case this.options.BETWEEN:
         const rangeValues = value.split(this.options.VALUE_DELIMITER as string);
-        obj[field] = Between(+rangeValues[0], +rangeValues[1]);
+        obj[field] = Between(this.parseDateOrNumber(rangeValues[0]), this.parseDateOrNumber(rangeValues[1]));
         break;
     }
     if (notOperator) {
       obj[field] = Not(obj[field]);
     }
     return obj;
+  }
+
+  private parseDateOrNumber(value: string) {
+    return (isMatch(value, EDateType.Date) || isMatch(value, EDateType.Datetime)) ? value : +value;
   }
 }
