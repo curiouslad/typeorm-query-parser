@@ -13,7 +13,18 @@
     "prepublishOnly": "npm test && npm run lint",
     "preversion": "npm run lint",
     "version": "npm run format && git add -A src",
-    "postversion": "git push && git push --tags"
+    "postversion": "git push && git push --tags",
+    "release": "standard-version"
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
   },
   "repository": {
     "type": "git",
@@ -32,11 +43,15 @@
   },
   "homepage": "https://github.com/LaMbA3/typeorm-query-parser#readme",
   "devDependencies": {
+    "@commitlint/cli": "^15.0.0",
+    "@commitlint/config-conventional": "^15.0.0",
     "@types/jest": "^22.2.3",
     "@types/node": "^14.0.14",
     "codecov": "^3.1.0",
+    "husky": "^7.0.4",
     "jest": "^23.6.0",
     "prettier": "^1.13.2",
+    "standard-version": "^9.3.2",
     "ts-jest": "^22.4.6",
     "tslint": "^5.10.0",
     "tslint-config-prettier": "^1.13.0",
