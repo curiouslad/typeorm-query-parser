@@ -1,6 +1,6 @@
 {
   "name": "typeorm-query-parser",
-  "version": "0.0.0-semantic-release",
+  "version": "1.0.6",
   "description": "Url query parser for typeorm",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
