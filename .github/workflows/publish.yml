@@ -16,9 +16,7 @@ jobs:
       with:
         node-version: 17.x
     - name: Install dependencies
-      run: npx ci
-    - name: Install semantic-release extra plugins
-      run: npm install --save-dev @semantic-release/changelog @semantic-release/git      
+      run: npx ci   
     - name: Lint
       run: npm run lint
     - name: Test
@@ -29,4 +27,4 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         NPM_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
-      run: npx semantic-release
+      run: npm run release && npm run publish
