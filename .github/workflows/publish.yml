@@ -24,8 +24,10 @@ jobs:
     - name: Build
       run: npm run build      
     - name: Release
+      - run: git config --global user.email "you@example.com"
+      - run: git config --global user.name "Your Name"
       uses: fregante/setup-git-user@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         NPM_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
-      run: npm run release && npm run publish
+      - run: npm run release && npm run publish
