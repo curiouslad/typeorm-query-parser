@@ -9,22 +9,14 @@
     "build": "tsc",
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
     "lint": "tslint --fix -p tsconfig.json",
+    "postinstall": "husky install",
     "prepare": "npm run build",
-    "prepublishOnly": "npm test && npm run lint",
+    "prepublishOnly": "pinst --disable && npm test && npm run lint",
+    "postpublish": "pinst --enable",
     "preversion": "npm run lint",
     "version": "npm run format && git add -A src",
     "postversion": "git push && git push --tags",
     "release": "standard-version"
-  },
-  "config": {
-    "commitizen": {
-      "path": "cz-conventional-changelog"
-    }
-  },
-  "husky": {
-    "hooks": {
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
   },
   "repository": {
     "type": "git",
@@ -50,6 +42,7 @@
     "codecov": "^3.1.0",
     "husky": "^7.0.4",
     "jest": "^23.6.0",
+    "pinst": "^2.1.6",
     "prettier": "^1.13.2",
     "standard-version": "^9.3.2",
     "ts-jest": "^22.4.6",
