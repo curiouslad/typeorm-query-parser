@@ -9,9 +9,7 @@
     "build": "tsc",
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
     "lint": "tslint --fix -p tsconfig.json",
-    "semantic-release": "semantic-release",
-    "commit": "cz",
-    "prepare": "husky install"
+    "semantic-release": "semantic-release"
   },
   "repository": {
     "type": "git",
@@ -36,7 +34,7 @@
     "@types/node": "^14.0.14",
     "commitizen": "^4.2.4",
     "cz-conventional-changelog": "^3.3.0",
-    "husky": "^7.0.0",
+    "husky": "^7.0.4",
     "jest": "^23.6.0",
     "prettier": "^1.13.2",
     "semantic-release": "^19.0.2",
