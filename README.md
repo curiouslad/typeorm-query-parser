@@ -23,7 +23,7 @@ const parsedQuery = parser.build(query);
 
 EntityRepository.find(parsedQuery);
 ```
-
+I recommend that you create file from parsed and specify all options and then export it
 ### This is just an example, you can use it however you like.
 ### Basicly you just create instance of QueryBuilder and pass query object to .build() it will return you object ready for .find() in typeorm.
 ### For this to work your url string must follow the documentation below.
