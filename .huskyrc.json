@@ -1,7 +1,0 @@
-{ 
-    "husky": {
-      "hooks": {
-        "prepare-commit-msg": "npm run cz"
-      }
-    }
-}
