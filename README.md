@@ -2,6 +2,8 @@
 
 created by: [Mladen Skrbic](https://github.com/LaMbA3)
 
+# Please dont use this package. This package is NOT maintained.
+
 
 Typeorm Query Parser is simple url string parser for typeorm.
 
