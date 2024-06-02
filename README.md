@@ -1,6 +1,5 @@
 # Typeorm-Query-Parser
 
-created by: [Mladen Skrbic](https://github.com/LaMbA3)
 
 # Please dont use this package. This package is NOT maintained.
 
